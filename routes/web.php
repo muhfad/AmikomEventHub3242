@@ -5,6 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\Admin\CategoryController;
+
+Route::get('/login', function () {
+    return redirect()->route('admin.login');
+})->name('login');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show');
@@ -25,5 +30,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
         Route::resource('events', \App\Http\Controllers\Admin\EventController::class);
         Route::get('transactions', [\App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('transactions.index');
+        Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');  
     });
 });
+
+Route::view('/profil', 'profil')->name('profil');
+
+Route::view('/katalog', 'katalog')->name('katalog');
+
+Route::view('/bantuan', 'bantuan')->name('bantuan');

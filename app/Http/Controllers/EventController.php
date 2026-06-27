@@ -7,9 +7,18 @@ use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
-    public function show(Event $event)
+    public function show()
     {
-        $event->load('category');
-        return view('events.show', compact('event'));
+        return view('event-detail');
+    }
+
+    public function checkout()
+    {
+        return view('checkout');
+    }
+
+    public function ticket()
+    {
+        return view('ticket');
     }
 }

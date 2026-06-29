@@ -30,7 +30,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
         Route::resource('events', \App\Http\Controllers\Admin\EventController::class);
         Route::get('transactions', [\App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('transactions.index');
-        Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');  
+        Route::resource('categories', CategoryController::class);  
     });
 });
 

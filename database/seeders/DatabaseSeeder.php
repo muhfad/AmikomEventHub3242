@@ -32,6 +32,11 @@ class DatabaseSeeder extends Seeder
             'slug' => 'entertaiment',
         ]);
 
+        $category3 = \App\Models\Category::firstOrCreate([
+            'name' => 'Workshop',
+            'slug' => 'workshop',
+        ]);
+
         \App\Models\Event::create([
             'category_id' => $category2->id,
             'title' => 'Jazz Night 2025',
@@ -63,6 +68,39 @@ class DatabaseSeeder extends Seeder
             'price' => 50000,
             'stock' => 100,
             'poster_path' => 'posters/event-3.png',
+        ]);
+
+        \App\Models\Event::create([
+            'category_id' => $category3->id,
+            'title' => 'UI/UX Masterclass',
+            'description' => 'Pelajari dasar hingga lanjutan desain UI/UX bersama praktisi industri.',
+            'date' => '2026-06-15 09:00:00',
+            'location' => 'Lab Multimedia Amikom',
+            'price' => 75000,
+            'stock' => 80,
+            'poster_path' => 'posters/event-4.png',
+        ]);
+
+        \App\Models\Event::create([
+            'category_id' => $category2->id,
+            'title' => 'E-Sport U-Champ 2026',
+            'description' => 'Kompetisi e-sport antar mahasiswa dengan hadiah jutaan rupiah.',
+            'date' => '2026-06-20 13:00:00',
+            'location' => 'Sport Hall Amikom',
+            'price' => 25000,
+            'stock' => 200,
+            'poster_path' => 'posters/event-5.png',
+        ]);
+
+        \App\Models\Event::create([
+            'category_id' => $category3->id,
+            'title' => 'Digital Marketing Bootcamp',
+            'description' => 'Pelatihan intensif digital marketing untuk meningkatkan skill pemasaran digital.',
+            'date' => '2026-06-25 08:00:00',
+            'location' => 'Ruang Seminar Utama',
+            'price' => 100000,
+            'stock' => 60,
+            'poster_path' => 'posters/event-6.png',
         ]);
 
 

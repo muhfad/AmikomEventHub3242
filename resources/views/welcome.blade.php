@@ -64,6 +64,28 @@
         </div>
     </div>
 
+    <div class="flex flex-wrap gap-3 mb-10">
+
+        <a href="{{ route('home') }}"
+            class="px-5 py-2 rounded-full font-semibold transition
+            {{ request('category') ? 'bg-white border border-slate-200 text-slate-700 hover:border-indigo-500 hover:text-indigo-600' : 'bg-indigo-600 text-white' }}">
+            Semua
+        </a>
+
+        @foreach($categories as $category)
+
+            <a href="{{ route('home', ['category' => $category->slug]) }}"
+                class="px-5 py-2 rounded-full font-semibold transition
+                {{ request('category') == $category->slug
+                    ? 'bg-indigo-600 text-white'
+                    : 'bg-white border border-slate-200 text-slate-700 hover:border-indigo-500 hover:text-indigo-600' }}">
+                {{ $category->name }}
+            </a>
+
+        @endforeach
+
+    </div>
+
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         @forelse($events as $event)
         <div

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Storage;
 use App\Models\Event;
 use App\Models\Category;
 
@@ -76,7 +76,16 @@ class EventController extends Controller
 
     public function destroy(Event $event)
     {
+        // Hapus poster dari storage jika ada
+        if ($event->poster_path && Storage::disk('public')->exists($event->poster_path)) {
+            Storage::disk('public')->delete($event->poster_path);
+        }
+
+        // Hapus data event dari database
         $event->delete();
-        return redirect()->route('admin.events.index')->with('success', 'Event berhasil dihapus.');
+
+        return redirect()
+            ->route('admin.events.index')
+            ->with('success', 'Event berhasil dihapus.');
     }
 }

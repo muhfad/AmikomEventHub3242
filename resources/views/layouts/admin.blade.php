@@ -36,6 +36,11 @@
                 </svg>
                 Laporan Transaksi
             </a>
+            <a href="{{ route('admin.partners.index') }}"
+            class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-slate-100 {{ request()->routeIs('admin.partners.*') ? 'bg-indigo-50 text-indigo-600 font-bold' : '' }}">
+                <span>🤝</span>
+                <span>Partner</span>
+            </a>
         </nav>
 
         <div class="pt-6 border-t border-indigo-800">

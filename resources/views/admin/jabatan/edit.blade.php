@@ -1,0 +1,60 @@
+@extends('layouts.admin')
+
+@section('title','Edit Jabatan')
+@section('page_title','Edit Jabatan')
+
+@section('content')
+
+<div class="bg-white rounded-3xl shadow-sm p-8">
+
+<form
+action="{{ route('admin.jabatan.update',$jabatan->id) }}"
+method="POST">
+
+@csrf
+@method('PUT')
+
+<div class="mb-6">
+
+<label class="font-bold">
+Nama Jabatan
+</label>
+
+<input
+type="text"
+name="name"
+class="w-full mt-2 border rounded-xl p-3"
+value="{{ old('name',$jabatan->name) }}">
+
+@error('name')
+
+<p class="text-red-500 mt-2">
+
+{{ $message }}
+
+</p>
+
+@enderror
+
+</div>
+
+<button
+class="bg-indigo-600 text-white px-6 py-3 rounded-xl">
+
+Update
+
+</button>
+
+<a
+href="{{ route('admin.jabatan.index') }}"
+class="ml-2">
+
+Kembali
+
+</a>
+
+</form>
+
+</div>
+
+@endsection

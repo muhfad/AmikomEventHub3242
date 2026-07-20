@@ -7,6 +7,8 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\WebhookController;
+use App\Http\Controllers\Admin\JabatanController;
+use App\Http\Controllers\Admin\PengurusController;
 
 Route::get('/login', function () {
     return redirect()->route('admin.login');
@@ -32,6 +34,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('events', \App\Http\Controllers\Admin\EventController::class);
         Route::get('transactions', [\App\Http\Controllers\Admin\TransactionController::class, 'index'])->name('transactions.index');
         Route::resource('categories', CategoryController::class);  
+        Route::resource('jabatan', JabatanController::class);
+        Route::resource('pengurus', PengurusController::class)->parameters(['pengurus' => 'pengurus']);
     });
 });
 

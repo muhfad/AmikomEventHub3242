@@ -31,10 +31,41 @@
                 AH</div>
             <span class="text-xl font-bold tracking-tight">AmikomEventHub</span>
         </a>
-        <div class="hidden md:flex gap-8 font-medium">
-            <a href="{{ url('/') }}" class="text-indigo-600">Jelajahi</a>
-            <a href="#" class="hover:text-indigo-600 transition">Kategori</a>
-            <a href="#" class="hover:text-indigo-600 transition">Tentang Kami</a>
+        <div class="hidden md:flex items-center gap-8 font-medium">
+            <a href="{{ route('home') }}" class="hover:text-indigo-600">
+                Jelajahi
+            </a>
+
+            <a href="{{ route('tickets.index') }}" class="hover:text-indigo-600">
+                Tiket Saya
+            </a>
+
+            @guest
+                <a href="{{ route('login') }}"
+                class="px-5 py-2 rounded-xl border border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white transition">
+                    Login
+                </a>
+
+                <a href="{{ route('register') }}"
+                class="px-5 py-2 rounded-xl bg-indigo-600 text-white hover:bg-indigo-700 transition">
+                    Register
+                </a>
+            @endguest
+
+            @auth
+                <span class="font-semibold text-slate-700">
+                    {{ Auth::user()->name }}
+                </span>
+
+                <form action="{{ route('logout') }}" method="POST" class="inline">
+                    @csrf
+                    <button
+                        type="submit"
+                        style="background:#dc2626;color:white;padding:10px 18px;border-radius:12px;">
+                        Logout
+                    </button>
+                </form>
+            @endauth
         </div>
     </nav>
 

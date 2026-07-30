@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Transaction;
 
 class Event extends Model
 {
@@ -22,5 +23,10 @@ class Event extends Model
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }

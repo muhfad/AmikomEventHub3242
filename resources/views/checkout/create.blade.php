@@ -32,19 +32,37 @@
                     <p class="text-indigo-600 font-bold mt-2">1 x Rp {{ number_format($event->price, 0, ',', '.') }}</p>
                 </div>
             </div>
-            <div class="mt-8 pt-6 border-t space-y-3">
-                <div class="flex justify-between text-slate-500">
-                    <span>Harga Tiket</span>
-                    <span>Rp {{ number_format($event->price, 0, ',', '.') }}</span>
-                </div>
-                <div class="flex justify-between text-slate-500">
-                    <span>Biaya Layanan</span>
-                    <span>Rp 5.000</span>
-                </div>
-                <div class="flex justify-between text-2xl font-black mt-4 pt-4 border-t">
-                    <span>Total Bayar</span>
-                    <span class="text-indigo-600">Rp {{ number_format($event->price + 5000, 0, ',', '.') }}</span>
-                </div>
+            <div class="mt-8 pt-6 border-t">
+                @if($event->price == 0)
+                    <div class="text-center">
+                        <h2 class="text-3xl font-black text-green-600">
+                            GRATIS
+                        </h2>
+
+                        <p class="text-slate-500 mt-2">
+                            Event ini tidak memerlukan pembayaran.
+                        </p>
+                    </div>
+                @else
+                    <div class="space-y-3">
+                        <div class="flex justify-between text-slate-500">
+                            <span>Harga Tiket</span>
+                            <span>Rp {{ number_format($event->price, 0, ',', '.') }}</span>
+                        </div>
+
+                        <div class="flex justify-between text-slate-500">
+                            <span>Biaya Layanan</span>
+                            <span>Rp 5.000</span>
+                        </div>
+
+                        <div class="flex justify-between text-2xl font-black mt-4 pt-4 border-t">
+                            <span>Total Bayar</span>
+                            <span class="text-indigo-600">
+                                Rp {{ number_format($event->price + 5000, 0, ',', '.') }}
+                            </span>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
 
@@ -81,8 +99,12 @@
                 </div>
 
                 <button type="submit"
-                    class="w-full py-5 bg-indigo-600 text-white rounded-2xl font-black text-xl shadow-xl shadow-indigo-200 hover:bg-indigo-700 active:scale-95 transition-all">
-                    Lanjut Pembayaran
+                        class="w-full py-5 bg-indigo-600 text-white rounded-2xl font-black text-xl shadow-xl shadow-indigo-200 hover:bg-indigo-700 active:scale-95 transition-all">
+                    @if($event->price == 0)
+                        Daftar Gratis
+                    @else
+                        Lanjut Pembayaran
+                    @endif
                 </button>
                 <p class="text-center text-xs text-slate-400">Dengan menekan tombol di atas, Anda menyetujui Syarat
                     & Ketentuan kami.</p>

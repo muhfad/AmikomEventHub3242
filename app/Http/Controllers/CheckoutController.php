@@ -27,17 +27,46 @@ class CheckoutController extends Controller
         }
 
         $orderId = 'TRX-' . time() . '-' . Str::random(5);
-        $totalPrice = $event->price + 5000; // Adding dummy service fee 5000
+
+        // Jika event gratis tidak dikenakan service fee
+        $totalPrice = $event->price > 0
+            ? $event->price + 5000
+            : 0;
 
         $transaction = Transaction::create([
             'event_id' => $event->id,
             'order_id' => $orderId,
+            'user_id' => auth()->id(),
             'customer_name' => $request->customer_name,
             'customer_email' => $request->customer_email,
             'customer_phone' => $request->customer_phone,
             'total_price' => $totalPrice,
             'status' => 'Pending',
         ]);
+
+        // =========================
+        // FREE EVENT
+        // =========================
+        if ($event->price == 0) {
+
+            $transaction->update([
+                'status' => 'success'
+            ]);
+
+            $event->decrement('stock');
+
+            try {
+                \Illuminate\Support\Facades\Mail::to($transaction->customer_email)
+                    ->send(new \App\Mail\EventTicketMail($transaction));
+            } catch (\Exception $e) {
+                \Log::error($e->getMessage());
+            }
+
+            return redirect()->route(
+                'checkout.success',
+                $transaction->order_id
+            );
+        }
 
         // Midtrans Config
         \Midtrans\Config::$serverKey = config('midtrans.server_key');

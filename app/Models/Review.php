@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Transaction extends Model
+class Review extends Model
 {
     protected $fillable = [
-        'event_id', 'order_id', 'customer_name', 'customer_email', 'customer_phone', 'total_price', 'status', 'snap_token', 'user_id',
+        'event_id',
+        'transaction_id',
+        'user_id',
+        'rating',
+        'review'
     ];
 
     public function event()
@@ -20,8 +24,8 @@ class Transaction extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function review()
+    public function transaction()
     {
-        return $this->hasOne(Review::class);
+        return $this->belongsTo(Transaction::class);
     }
 }

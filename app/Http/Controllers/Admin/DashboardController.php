@@ -5,43 +5,60 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use App\Models\Transaction;
+use App\Models\User;
+use App\Models\Review;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // Total pendapatan dari transaksi yang berhasil
+        $totalEvents = Event::count();
+
+        $totalTransactions = Transaction::count();
+
+        $totalUsers = User::count();
+
+        $totalReviews = Review::count();
+
         $totalRevenue = Transaction::whereIn('status', [
             'success',
-            'settlement',
-            'capture'
+            'settlement'
         ])->sum('total_price');
 
-        // Tiket yang berhasil terjual
-        $ticketsSold = Transaction::whereIn('status', [
-            'success',
-            'settlement',
-            'capture'
-        ])->count();
+        $topEvents = Event::withCount('transactions')
+            ->orderByDesc('transactions_count')
+            ->take(5)
+            ->get();
 
-        // Event yang masih aktif
-        $activeEvents = Event::where('date', '>=', now())->count();
+        $monthlyTransactions = Transaction::select(
+                DB::raw('MONTH(created_at) as month'),
+                DB::raw('COUNT(*) as total')
+            )
+            ->whereYear('created_at', now()->year)
+            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->pluck('total', 'month');
 
-        // Pesanan yang masih pending
-        $pendingOrders = Transaction::where('status', 'pending')->count();
+        $chartData = [];
 
-        // 5 transaksi terbaru
-        $recentTransactions = Transaction::with('event')
+        $latestTransactions = Transaction::with('event')
             ->latest()
             ->take(5)
             ->get();
 
-        return view('admin.dashboard', compact(
+        for ($i = 1; $i <= 12; $i++) {
+            $chartData[] = $monthlyTransactions[$i] ?? 0;
+        }
+        
+            return view('admin.dashboard', compact(
+            'totalEvents',
+            'totalTransactions',
+            'totalUsers',
+            'totalReviews',
             'totalRevenue',
-            'ticketsSold',
-            'activeEvents',
-            'pendingOrders',
-            'recentTransactions'
+            'topEvents',
+            'chartData',
+            'latestTransactions'
         ));
     }
 }

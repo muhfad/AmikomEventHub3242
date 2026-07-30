@@ -40,11 +40,77 @@
             </div>
         </div>
 
+        <!-- Rating -->
+        <div class="flex items-center gap-4 mt-4">
+            <div class="text-yellow-500 text-2xl">
+                @for($i = 1; $i <= 5; $i++)
+                    @if($i <= floor($averageRating))
+                        ★
+                    @else
+                        ☆
+                    @endif
+                @endfor
+            </div>
+
+            <div>
+                <p class="text-xl font-bold">
+                    {{ number_format($averageRating ?? 0, 1) }}/5
+                </p>
+
+                <p class="text-slate-500">
+                    {{ $event->reviews->count() }} Review
+                </p>
+            </div>
+        </div>
+
+        <!-- Deskripsi -->
         <div class="prose prose-slate max-w-none">
-            <h3 class="text-2xl font-bold mb-4">Deskripsi Event</h3>
+            <h3 class="text-2xl font-bold mb-4">
+                Deskripsi Event
+            </h3>
+
             <div class="text-lg text-slate-600 leading-relaxed whitespace-pre-line">
                 {{ $event->description }}
             </div>
+        </div>
+
+        <!-- Review -->
+        <div class="mt-12">
+            <h2 class="text-2xl font-black mb-6">
+                Ulasan Pengunjung
+            </h2>
+
+            @forelse($event->reviews as $review)
+                <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-5">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h3 class="font-bold text-lg">
+                                {{ $review->user->name }}
+                            </h3>
+
+                            <div class="text-yellow-500 text-lg">
+                                @for($i = 1; $i <= $review->rating; $i++)
+                                    ★
+                                @endfor
+                            </div>
+                        </div>
+
+                        <small class="text-slate-400">
+                            {{ $review->created_at->format('d M Y') }}
+                        </small>
+                    </div>
+
+                    <p class="mt-4 text-slate-600 leading-relaxed">
+                        {{ $review->review }}
+                    </p>
+                </div>
+            @empty
+                <div class="bg-slate-100 rounded-2xl p-8 text-center">
+                    <p class="text-slate-500">
+                        Belum ada review untuk event ini.
+                    </p>
+                </div>
+            @endforelse
         </div>
 
         <div

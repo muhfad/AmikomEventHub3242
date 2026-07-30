@@ -6,16 +6,18 @@ RUN apt-get update && apt-get install -y \
     unzip \
     zip \
     curl \
-    gnupg
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Install NodeJS 22
+# Install Node.js 22
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && apt-get install -y nodejs
 
-# Install PHP Extensions
+# Install PHP extensions
 RUN install-php-extensions \
     pdo_mysql \
     mbstring \
@@ -29,20 +31,18 @@ WORKDIR /app
 
 COPY . .
 
-# Install Composer dependencies
+# Install dependency
 RUN composer install --no-dev --optimize-autoloader
 
-# Install Node dependencies
+# Build frontend
 RUN npm install
-
-# Build Vite
 RUN npm run build
 
-# Cache Laravel
-RUN php artisan config:cache
-RUN php artisan route:cache
-RUN php artisan view:cache
+# Permission
+RUN chmod -R 775 storage bootstrap/cache
 
-EXPOSE 80
+EXPOSE 8080
 
-CMD ["frankenphp", "run"]
+ENV SERVER_NAME=:8080
+
+CMD ["frankenphp","php-server","-r","public/","--listen",":8080"]
